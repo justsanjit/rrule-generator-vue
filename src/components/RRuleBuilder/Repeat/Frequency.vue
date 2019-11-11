@@ -2,7 +2,7 @@
     <div class="is-inline">
         <label class="label is-inline">Repeat </label>
         <div class="select">
-            <select @change="handleFrequency" :value="frequency">
+            <select v-model="frequency">
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
                 <option value="monthly">Monthly</option>
@@ -33,17 +33,16 @@ export default {
             return capitalize(camelCase(this.frequency));
         }
     },
+    watch: {
+        frequency: 'emitEvent'
+    },
     methods: {
-        handleFrequency(event) {
-            this.freq = event.target.value
-            this.emitEvent();
-        },
         handleInputChange(obj) {
             this.input = obj
             this.emitEvent();
         },
         emitEvent() {
-            this.$emit('input', Object.assign(this.input, {
+            this.$emit('input', Object.assign({}, this.input, {
                 freq: this.frequency
             }))
         }
